@@ -17,7 +17,7 @@ Thank you for your interest in contributing to N3! This document provides guidel
 
 ```bash
 # Fork the repository on GitHub, then:
-git clone https://github.com/YOUR_USERNAME/n3.git
+git clone https://github.com/intelligent-ears/N3.git
 cd n3
 ```
 
