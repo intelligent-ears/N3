@@ -1,0 +1,13 @@
+name: n3-security-indexer
+description: N3 Security Vulnerability Tracking Indexer
+networks:
+  - id: 1
+    start_block: 18000000
+    contracts:
+      - name: N3SecurityOracle
+        address: "0x0000000000000000000000000000000000000000"  # To be deployed
+        handler: src/handlers/security-events.ts
+        events:
+          - event: VulnerabilityDetected(address indexed contractAddress, string vulnType, uint8 severity, uint256 timestamp)
+          - event: SecurityScanCompleted(address indexed contractAddress, uint256 riskScore, uint256 timestamp)
+          - event: ContractDeployed(address indexed contractAddress, address indexed deployer, uint256 timestamp)

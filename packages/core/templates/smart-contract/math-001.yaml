@@ -1,0 +1,69 @@
+id: math-001
+name: Integer Overflow/Underflow (Pre-0.8.0)
+severity: high
+category: smart-contract
+tags: [math, overflow, underflow, arithmetic]
+description: |
+  Detects potential integer overflow/underflow vulnerabilities in contracts
+  using Solidity versions prior to 0.8.0 without SafeMath.
+
+hardhat:
+  test_file: test/security/Math.t.sol
+  test_function: test_NoOverflowUnderflow
+  auto_generate: true
+
+detection:
+  patterns:
+    - name: unchecked_arithmetic_old_solidity
+      solidity: |
+        pragma solidity \^0\.[0-7]\.
+    - name: missing_safemath
+      check: no_safemath_import
+    - name: unchecked_addition
+      solidity: |
+        \s+\+\s+
+    - name: unchecked_subtraction
+      solidity: |
+        \s+-\s+
+    - name: unchecked_multiplication
+      solidity: |
+        \s+\*\s+
+
+risk_calculation:
+  base_score: 75
+  modifiers:
+    uses_safemath: -70
+    solidity_0_8_plus: -75
+    has_overflow_checks: -60
+
+remediation:
+  priority: 2
+  fixes:
+    - Upgrade to Solidity 0.8.0+ (built-in overflow checks)
+    - Use OpenZeppelin SafeMath library
+    - Add manual overflow checks
+  code_example: |
+    // Option 1: Upgrade to Solidity 0.8.0+
+    pragma solidity ^0.8.0;
+    
+    function add(uint256 a, uint256 b) public pure returns (uint256) {
+        return a + b; // Automatic overflow check
+    }
+    
+    // Option 2: Use SafeMath (for older versions)
+    import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+    
+    using SafeMath for uint256;
+    
+    function add(uint256 a, uint256 b) public pure returns (uint256) {
+        return a.add(b);
+    }
+
+references:
+  - https://swcregistry.io/docs/SWC-101
+  - https://docs.soliditylang.org/en/v0.8.0/080-breaking-changes.html
+
+examples:
+  vulnerable_contracts:
+    - BeautyChain (BEC) Token (2018)
+    - SmartMesh (SMT) Token (2018)

@@ -1,0 +1,74 @@
+name: N3 Security Scan
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  security-scan:
+    name: N3 Security Scan
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Run N3 Security Scan
+        run: npx hardhat n3:scan --ci
+        
+      - name: Upload Security Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: n3-security-report
+          path: reports/n3-*.json
+          
+      - name: Comment PR with Results
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const report = JSON.parse(fs.readFileSync('reports/n3-report.json', 'utf8'));
+            
+            const summary = `
+            ## 🛡️ N3 Security Scan Results
+            
+            **Overall Risk Score:** ${report.overallRiskScore}/100
+            
+            ### Issues Found:
+            - 🔴 Critical: ${report.summary.critical}
+            - 🟠 High: ${report.summary.high}
+            - 🟡 Medium: ${report.summary.medium}
+            - 🔵 Low: ${report.summary.low}
+            
+            ${report.summary.critical > 0 ? '⚠️ **Critical vulnerabilities detected! Please review before merging.**' : '✅ No critical issues found.'}
+            `;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: summary
+            });
+            
+      - name: Fail on Critical Issues
+        run: |
+          if [ -f reports/n3-report.json ]; then
+            critical=$(jq '.summary.critical' reports/n3-report.json)
+            if [ "$critical" -gt 0 ]; then
+              echo "❌ Critical vulnerabilities found!"
+              exit 1
+            fi
+          fi
