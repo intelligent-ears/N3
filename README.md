@@ -208,8 +208,17 @@ contract N3_Reentrancy_Test is Test {
 **Terminal Output:**
 ```
 ╔═══════════════════════════════════════════════════════════╗
-║   N3 - Nuclei for Web3                                   ║
-║   Template-Based Security Scanner v0.1.0                 ║
+║                                                           ║
+║   ███╗   ██╗██████╗                                       ║
+║   ████╗  ██║╚════██╗                                      ║
+║   ██╔██╗ ██║ █████╔╝                                      ║
+║   ██║╚██╗██║ ╚═══██╗                                      ║
+║   ██║ ╚████║██████╔╝                                      ║
+║   ╚═╝  ╚═══╝╚═════╝                                       ║
+║                                                           ║
+║   N3 - Nuclei for Web3                                    ║
+║   Template-Based Security Scanner v0.1.0                  ║
+║                                                           ║
 ╚═══════════════════════════════════════════════════════════╝
 
 📄 VulnerableBank.sol
@@ -354,37 +363,6 @@ n3 --help
 # Test the core engine
 node test-scan.js
 ```
-
-## 📦 Packages
-
-### @n3/core
-Core security scanning engine with template parser and vulnerability detection.
-
-### @n3/cli
-Command-line interface for running security scans (Nuclei-style).
-
-### @n3/hardhat-plugin
-Hardhat plugin for integrating N3 into your development workflow with advanced security tasks.
-
-**Available Tasks:**
-- `n3:scan` - Scan contracts for vulnerabilities
-- `n3:test` - Generate and run security tests
-- `n3:audit` - Comprehensive security audit with reports
-- `n3:coverage` - Security template coverage analysis
-
-See [TASKS.md](./packages/hardhat-plugin/TASKS.md) for complete documentation.
-
-### @n3/mcp-server
-Model Context Protocol server for AI-powered security analysis.
-
-### @n3/envio-indexer
-Envio indexer for monitoring deployed contracts.
-
-### @n3/blockscout-widget (planned)
-Blockscout widget for contract verification and security badges.
-
-### @n3/dashboard (planned)
-Web dashboard for visualizing security metrics and trends.
 
 ## 🤝 Contributing
 
