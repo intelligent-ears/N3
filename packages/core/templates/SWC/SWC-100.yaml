@@ -1,1 +1,7 @@
-id: reentrancy-basicinfo:  name: Basic Reentrancy Detection  author: n3  severity: critical  description: Detects potential reentrancy vulnerabilities  tags: security,defi,reentrancy
+id: reentrancy-basic
+info:
+  name: Basic Reentrancy Detection
+  author: n3
+  severity: critical
+  description: Detects potential reentrancy vulnerabilities
+  tags: security,defi,reentrancy
