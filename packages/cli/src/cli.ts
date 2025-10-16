@@ -224,6 +224,97 @@ async function listTemplates(options: any) {
   formatter.displayTemplates(filtered, options.verbose);
 }
 
+// CVE scanning command
+program
+  .command('cve <target>')
+  .description('Scan a URL for known CVEs (Common Vulnerabilities and Exposures)')
+  .option('--templates <dir>', 'CVE templates directory')
+  .option('--severity <severity>', 'Filter by severity', 'critical,high,medium')
+  .option('--tags <tags>', 'Filter by tags (comma-separated)')
+  .option('--save <file>', 'Save results to file')
+  .option('--format <format>', 'Output format (json, markdown, html, terminal)', 'terminal')
+  .option('--debug', 'Enable debug mode')
+  .action(async (target, options) => {
+    // Lazy load CVE scanner to avoid errors if not used
+    const { CVEScanner } = await import('@n3/core');
+    
+    logger.setDebug(options.debug);
+    
+    const spinner = ora('Initializing CVE Scanner...').start();
+    
+    try {
+      const scanner = new CVEScanner();
+      const templateDir = options.templates || path.join(__dirname, '../../core/cve-templates');
+      
+      await scanner.initialize({
+        templatesDir: templateDir,
+        severities: options.severity.split(',').map((s: string) => s.trim()),
+        tags: options.tags ? options.tags.split(',').map((t: string) => t.trim()) : undefined,
+      });
+      
+      spinner.succeed(`Loaded ${scanner.getTemplates().length} CVE templates`);
+      
+      const scanSpinner = ora(`Scanning ${target}...`).start();
+      const report = await scanner.scan(target);
+      scanSpinner.succeed('Scan complete');
+      
+      // Display results
+      console.log('\n' + chalk.bold.cyan('🔍 CVE SCAN RESULTS') + '\n');
+      console.log(`Target: ${chalk.bold(target)}`);
+      console.log(`Total Checks: ${report.totalChecks}`);
+      console.log(`Vulnerabilities Found: ${chalk.red.bold(report.vulnerabilities.length)}\n`);
+      
+      if (report.vulnerabilities.length > 0) {
+        report.vulnerabilities.forEach((vuln, idx) => {
+          const icon = vuln.template.info.severity === 'critical' ? '🔴' :
+                      vuln.template.info.severity === 'high' ? '🟠' : '🟡';
+          
+          console.log(`${idx + 1}. ${icon} ${chalk.bold(vuln.template.info.name)} [${vuln.template.id}]`);
+          console.log(`   Severity: ${chalk.red(vuln.template.info.severity.toUpperCase())}`);
+          console.log(`   Matched Path: ${vuln.matchedPath}`);
+          console.log(`   Description: ${vuln.template.info.description}`);
+          if (vuln.template.info.reference.length > 0) {
+            console.log(`   Reference: ${vuln.template.info.reference[0]}`);
+          }
+          console.log('');
+        });
+        
+        // Summary
+        console.log(chalk.bold('📊 Summary:'));
+        console.log(`   🔴 Critical: ${report.summary.critical}`);
+        console.log(`   🟠 High: ${report.summary.high}`);
+        console.log(`   🟡 Medium: ${report.summary.medium}`);
+        console.log(`   🔵 Low: ${report.summary.low}`);
+        console.log(`   ℹ️  Info: ${report.summary.info}\n`);
+      } else {
+        console.log(chalk.green('✅ No known CVEs detected!\n'));
+      }
+      
+      // Save report if requested
+      if (options.save) {
+        try {
+          const reportContent = options.format === 'json' 
+            ? JSON.stringify(report, null, 2)
+            : JSON.stringify(report, null, 2); // TODO: Add other formats
+          
+          const { writeFile } = await import('fs/promises');
+          await writeFile(options.save, reportContent, 'utf-8');
+          console.log(chalk.green(`\n📄 Report saved to: ${options.save}\n`));
+        } catch (writeError: any) {
+          console.error(chalk.red(`Failed to save report: ${writeError.message}`));
+        }
+      }
+      
+    } catch (error: any) {
+      spinner.fail('CVE scan failed');
+      console.error(chalk.red(error.message));
+      if (options.debug) {
+        console.error(chalk.gray(error.stack));
+      }
+      process.exit(1);
+    }
+  });
+
 function showBanner(options: any) {
   if (options.noColor || options.output) return;
 
