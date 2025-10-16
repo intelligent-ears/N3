@@ -264,45 +264,6 @@ const analysis = await n3.analyzeWithAI(contractAddress);
 - Optimism
 - Arbitrum
 
-## 🎯 Roadmap & Status
-
-### ✅ Completed Features
-
-- [x] **Core Security Engine** - Template-based vulnerability detection
-- [x] **YAML Templates** - 5 active security templates (reentrancy, access, math, oracle, flash-loan)
-- [x] **CLI Tool** - Nuclei-style command-line interface with debug mode
-- [x] **Pattern Matching** - Regex-based Solidity pattern detection
-- [x] **Risk Scoring** - Dynamic risk calculation with modifiers
-- [x] **Multiple Output Formats** - Terminal, JSON, Markdown, HTML
-- [x] **Hardhat Plugin** - Basic scan task integration
-- [x] **MCP Server** - Model Context Protocol server implementation
-- [x] **Envio Indexer** - Event indexing setup
-
-### 🚧 In Progress
-
-- [ ] **Advanced Hardhat Tasks** - Test generation, audit, coverage
-- [ ] **Template Marketplace** - Community template sharing
-- [ ] **CI/CD Templates** - GitHub Actions, GitLab CI integration
-- [ ] **Real-time Monitoring** - Live contract monitoring with Envio
-
-### 🔜 Planned Features
-
-- [ ] **Web Dashboard** - React-based security metrics dashboard
-- [ ] **Blockscout Widget** - Security badges and contract verification
-- [ ] **AI Analysis** - GPT-powered vulnerability insights
-- [ ] **Auto-remediation** - Suggested fixes and PR generation
-- [ ] **Multi-chain Deployment** - Cross-chain security scanning
-- [ ] **VS Code Extension** - IDE integration for real-time scanning
-
-## 📖 Documentation
-
-- [CLI Guide](./packages/cli/CLI_GUIDE.md) - Complete CLI usage guide
-- [CLI Quick Reference](./packages/cli/CLI_QUICKREF.md) - Command reference card
-- [Template Reference](./packages/core/templates/README.md) - Available security templates
-- [Getting Started](./docs/getting-started.md) - Step-by-step guide
-- [API Documentation](./docs/api/README.md) - Core API reference
-- [Integration Guides](./docs/integrations/README.md) - Hardhat, MCP, Envio
-
 ## 🏗️ Project Structure
 
 ```
