@@ -5,7 +5,7 @@ import {
   VulnerabilityEvent,
   SecurityMetric,
   ContractDeployment,
-} from "generated";
+} from "../generated";
 
 // Track vulnerability detection events
 N3SecurityOracle.VulnerabilityDetected.handler(async ({ event, context }: any) => {
