@@ -104,11 +104,17 @@ module.exports = {
 # Scan your contracts
 npx hardhat n3:scan
 
-# Run security tests (coming soon)
-npx hardhat n3:test
+# Generate security tests
+npx hardhat n3:test --generate
 
-# Full audit (coming soon)
-npx hardhat n3:audit --network mainnet
+# Run security tests
+npx hardhat n3:test --run
+
+# Comprehensive audit with report
+npx hardhat n3:audit --output audit.html --format html
+
+# Check security coverage
+npx hardhat n3:coverage --threshold 80
 ```
 
 ## 📚 Features
@@ -291,9 +297,13 @@ n3/
 │   │   │       └── template-manager.ts
 │   │   └── CLI_GUIDE.md
 │   │
-│   ├── hardhat-plugin/    # Hardhat integration ⏳
-│   │   └── src/tasks/
-│   │       └── scan.ts
+│   ├── hardhat-plugin/    # Hardhat integration ✅
+│   │   ├── src/tasks/
+│   │   │   ├── scan.ts    # Basic security scanning
+│   │   │   ├── test.ts    # Test generation & execution
+│   │   │   ├── audit.ts   # Comprehensive audit
+│   │   │   └── coverage.ts # Coverage analysis
+│   │   └── TASKS.md       # Complete task documentation
 │   │
 │   ├── mcp-server/        # MCP server ✅
 │   │   └── src/index.ts
@@ -354,7 +364,15 @@ Core security scanning engine with template parser and vulnerability detection.
 Command-line interface for running security scans (Nuclei-style).
 
 ### @n3/hardhat-plugin
-Hardhat plugin for integrating N3 into your development workflow.
+Hardhat plugin for integrating N3 into your development workflow with advanced security tasks.
+
+**Available Tasks:**
+- `n3:scan` - Scan contracts for vulnerabilities
+- `n3:test` - Generate and run security tests
+- `n3:audit` - Comprehensive security audit with reports
+- `n3:coverage` - Security template coverage analysis
+
+See [TASKS.md](./packages/hardhat-plugin/TASKS.md) for complete documentation.
 
 ### @n3/mcp-server
 Model Context Protocol server for AI-powered security analysis.
