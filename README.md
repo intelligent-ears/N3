@@ -76,25 +76,29 @@ Vulnerabilities Found: 1
 ### Installation
 
 ```bash
-# Clone the repository
-git clone https://github.com/intelligent-ears/n3.git
-cd n3
-
 # Install dependencies (monorepo)
 npm install
 
 # Build all packages
 npm run build
 
-# Install CLI globally (optional)
+# Use n3 command directly from repo
+./bin/n3 --help
+
+# Make n3 available globally (method 1 - symlink)
+mkdir -p ~/bin
+ln -sf $(pwd)/bin/n3 ~/bin/n3
+export PATH="$PATH:$HOME/bin"
+
+# Make n3 available globally (method 2 - requires sudo)
 cd packages/cli
-npm link
+sudo npm link
 ```
 
 ### Quick Scan with CLI
 
 ```bash
-# Scan a single contract
+# Scan a single contract (assuming n3 is in PATH)
 n3 contracts/MyContract.sol
 
 # Scan with debug output
@@ -497,21 +501,27 @@ const analysis = await n3.analyzeWithAI(contractAddress);
 
 ```
 n3/
+├── bin/                   # CLI executable wrappers ✅
+│   └── n3                 # Main CLI executable  
+│
 ├── packages/
 │   ├── core/              # Core security engine ✅
 │   │   ├── src/
 │   │   │   ├── engine.ts          # Main scanning engine
 │   │   │   ├── parser.ts          # Template parser
-│   │   │   ├── matcher.ts         # Pattern matcher
+│   │   │   ├── risk-calculator.ts # Risk score calculator
+│   │   │   ├── types.ts           # Core type definitions
 │   │   │   ├── cve-types.ts       # CVE type definitions
 │   │   │   ├── cve-parser.ts      # CVE template parser
 │   │   │   └── cve-scanner.ts     # CVE scanning engine
 │   │   ├── templates/             # Smart contract templates
-│   │   │   ├── reentrancy-001.yaml
-│   │   │   ├── access-001.yaml
-│   │   │   ├── math-001.yaml
-│   │   │   ├── oracle-001.yaml
-│   │   │   └── defi-001.yaml
+│   │   │   ├── defi/
+│   │   │   │   ├── flash-loan-001.yaml
+│   │   │   │   └── oracle-001.yaml
+│   │   │   └── smart-contract/
+│   │   │       ├── access-001.yaml
+│   │   │       ├── math-001.yaml
+│   │   │       └── reentrancy-001.yaml
 │   │   └── cve-templates/         # CVE detection templates
 │   │       ├── CVE-2022-40769.yaml    # Profanity vulnerability
 │   │       ├── CVE-2023-PRIVATE-KEY.yaml
@@ -525,34 +535,33 @@ n3/
 │   │   │       ├── formatter.ts
 │   │   │       ├── file-scanner.ts
 │   │   │       └── template-manager.ts
-│   │   └── CLI_GUIDE.md
 │   │
 │   ├── hardhat-plugin/    # Hardhat integration ✅
 │   │   ├── src/tasks/
 │   │   │   ├── scan.ts        # Basic security scanning
-│   │   │   ├── test.ts        # Test generation & execution ✅
-│   │   │   ├── audit.ts       # Comprehensive audit ✅
-│   │   │   └── coverage.ts    # Coverage analysis ✅
-│   │   └── TASKS.md           # Complete task documentation (800+ lines)
+│   │   │   ├── test.ts        # Test generation & execution
+│   │   │   ├── audit.ts       # Comprehensive audit
+│   │   │   ├── fix.ts         # Auto-fix suggestions
+│   │   │   ├── coverage.ts    # Coverage analysis
+│   │   │   └── monitor.ts     # Real-time monitoring
+│   │   └── TASKS.md           # Task documentation
 │   │
 │   ├── mcp-server/        # MCP server ✅
 │   │   └── src/index.ts
 │   │
-│   ├── envio-indexer/     # Envio indexer ⏳
-│   │   └── src/
-│   │
-│   ├── blockscout-widget/ # Blockscout widget 🔜
-│   │   └── src/
-│   │
-│   └── dashboard/         # Web dashboard 🔜
+│   └── envio-indexer/     # Envio indexer ⏳
 │       └── src/
 │
 ├── examples/
 │   └── vulnerable-contracts/
+│       ├── SecureBank.sol
 │       └── VulnerableBank.sol
 │
-├── CVE_TESTING.md         # CVE scanner testing guide ✅
-├── CVE_FEATURE_SUMMARY.md # CVE feature documentation ✅
+├── scripts/               # Utility scripts
+│   └── bootstrap.sh       # Setup script
+│
+├── CVE_FEATURE_SUMMARY.md # CVE feature documentation
+├── CVE_TESTING.md         # CVE scanner testing guide
 └── README.md
 
 Legend: ✅ Complete | ⏳ In Progress | 🔜 Planned
@@ -561,31 +570,28 @@ Legend: ✅ Complete | ⏳ In Progress | 🔜 Planned
 ## 🛠️ Development
 
 ```bash
-# Clone the repository
-git clone https://github.com/intelligent-ears/n3.git
-cd n3
-
 # Install dependencies (monorepo)
 npm install
 
 # Build all packages
 npm run build
 
-# Build specific package
-cd packages/core && npm run build
-cd packages/cli && npm run build
+# Build specific packages
+npm run build:core
+npm run build:cli
 
-# Run CLI locally
-node packages/cli/dist/cli.js contracts/MyContract.sol -d
+# Run CLI from bin directory
+./bin/n3 contracts/MyContract.sol -d
 
-# Install CLI globally for development
-cd packages/cli
-npm link
+# Make CLI globally available for development
+mkdir -p ~/bin
+ln -sf $(pwd)/bin/n3 ~/bin/n3
+# Add to PATH (also added automatically to ~/.bashrc)
+export PATH="$PATH:$HOME/bin"
 n3 --help
 
 # Test the core engine
-node test-scan.js
-```
+npm run test-scan
 
 ## 📖 Documentation
 
@@ -664,6 +670,7 @@ MIT License - see [LICENSE](./LICENSE)
 - **Axios** - HTTP client for CVE scanning
 - **Commander.js** - CLI framework
 - **Chalk & Ora** - Beautiful terminal output
-- **js-yaml** - YAML template parsing
+- **js-yaml/yaml** - YAML template parsing
+- **Zod** - Runtime type checking
 
 **Built with ❤️ for ETHOnline 2025**
