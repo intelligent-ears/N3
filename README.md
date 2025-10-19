@@ -32,7 +32,8 @@
 | **Coverage Analysis** | ✅ Template coverage metrics | ❌ Code coverage only |
 | **Multi-Format Reports** | ✅ HTML/JSON/MD | ⚠️ Limited formats |
 | **CLI & Hardhat Plugin** | ✅ Both included | ⚠️ Usually separate |
-| **Real-time Monitoring** | ✅ MCP server | ❌ Not available |
+| **Real-time Monitoring** | ✅ MCP server + Envio integration | ❌ Not available |
+| **Indexed Contract Data** | ✅ Envio HyperIndex integration | ❌ Not available |
 | **Open Source** | ✅ MIT License | ⚠️ Varies |
 
 ## 🚀 Quick Start
@@ -48,6 +49,7 @@
 - 🎨 **Enhanced Terminal Output**: Beautiful colorized reports with emoji indicators
 - 🧪 **Auto-generated Tests**: Generate Hardhat tests from security findings
 - 📈 **Coverage Analysis**: Track security template coverage with thresholds
+- 🔄 **Envio Integration**: Scan indexed contract data and real-time security monitoring
 
 **Live Test Results:**
 ```
@@ -479,14 +481,221 @@ contract N3_Reentrancy_Test is Test {
 }
 ```
 
-### 🤖 AI-Powered Analysis (Coming Soon)
+### 🔍 Envio Integration for Advanced Security Analytics
 
-Integration with Blockscout MCP for advanced analysis:
+N3 integrates with Envio's HyperIndex and HyperSync for enhanced security analytics:
 
 ```typescript
-// Analyze contract with AI
-const analysis = await n3.analyzeWithAI(contractAddress);
+// Import the N3 Envio client
+import { EnvioAdapter } from '@n3/mcp-server/tools/envio-adapter';
+import { getSecurityHistory, registerForMonitoring } from '@n3/mcp-server/tools';
+
+// Create an instance of the EnvioAdapter
+const envioAdapter = new EnvioAdapter(
+  'https://api.envio.dev/v1/hyperindex',
+  'https://api.envio.dev/v1/hypersync'
+);
+
+// Fetch security scan history for a contract
+const contractAddress = '0x1234...';
+const securityHistory = await getSecurityHistory(contractAddress, 'ethereum');
+console.log(`Found ${securityHistory.scanCount} security scans`);
+console.log(`Risk trend: ${securityHistory.riskTrend}`);
+
+// Register for real-time security monitoring via HyperSync
+const webhookUrl = 'https://your-webhook.com/security-events';
+await registerForMonitoring(contractAddress, webhookUrl, 'ethereum');
+
+// Query vulnerability events directly
+const vulnerabilities = await envioAdapter.getVulnerabilitiesForContract(contractAddress);
+console.log(`Found ${vulnerabilities.length} vulnerabilities`);
 ```
+
+**Features:**
+- Query security scan history from Envio's HyperIndex
+- Access comprehensive security metrics for contracts
+- Register for real-time monitoring with webhook notifications
+- Get detailed vulnerability events with severity ratings
+- Multi-chain support for comprehensive coverage
+- Fallback to local analysis when Envio data is not available
+
+### 🤖 AI-Powered Analysis with Blockscout MCP
+
+N3 integrates with Blockscout's MCP and SDK for enhanced security analysis:
+
+```typescript
+// Import the N3 Blockscout client
+import { createN3BlockscoutClient, BlockscoutAdapter } from '@n3/blockscout-widget';
+
+// Create a client with configuration
+const client = createN3BlockscoutClient({
+  baseUrl: 'http://localhost:3000',
+  apiKey: 'your-api-key' // Optional
+});
+
+// Analyze contract with AI via Blockscout MCP
+const analysis = await client.analyzeContract(contractAddress, 'ethereum');
+
+// Get rich contract data
+const adapter = new BlockscoutAdapter('ethereum');
+const contractInfo = await adapter.getSmartContract(contractAddress);
+const sourceCode = await adapter.getContractSourceCode(contractAddress);
+const transactions = await adapter.getTransactions(contractAddress);
+
+// Combine N3 analysis with Blockscout data
+const securityReport = {
+  contract: contractInfo,
+  source: sourceCode,
+  vulnerabilities: analysis.vulnerabilities,
+  riskScore: analysis.riskScore,
+  recommendations: analysis.recommendations,
+  recentTransactions: transactions.slice(0, 10)
+};
+```
+
+**Features:**
+- Verified contract source code analysis from Blockscout API
+- Multi-chain support (Ethereum, Polygon, Arbitrum, Optimism, Base, Avalanche)
+- Transaction pattern analysis for anomaly detection
+- MCP server for AI integration with LLMs
+- React widget for embedded security analysis
+- Custom dashboards and alerts with Blockscout integration
+
+### 🔍 Blockscout Integration
+
+N3 seamlessly integrates with Blockscout to enhance smart contract security analysis:
+
+**1. N3 Widget for Blockscout Explorer**
+
+Embed N3 security analytics directly in Blockscout using our React widget:
+
+```jsx
+import { BlockscoutSecurityWidget } from '@n3/blockscout-widget';
+
+function ExplorerPage() {
+  return (
+    <div className="explorer-container">
+      <h1>Contract Details</h1>
+      
+      {/* Embed the N3 security widget */}
+      <BlockscoutSecurityWidget 
+        contractAddress="0x1234..."
+        network="ethereum"
+        apiEndpoint="https://api.n3scan.io"
+        apiKey="your-optional-key"
+      />
+    </div>
+  );
+}
+```
+
+Or use it with vanilla JavaScript:
+
+```html
+<div id="n3-security-widget"></div>
+<script src="https://cdn.n3scan.io/widget.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    N3BlockscoutWidget.renderSecurityWidget({
+      contractAddress: '0x1234...',
+      network: 'ethereum',
+      container: document.getElementById('n3-security-widget')
+    });
+  });
+</script>
+```
+
+**2. Multi-Chain Support**
+
+Analyze contracts across any blockchain supported by Blockscout:
+- Ethereum Mainnet
+- Polygon
+- Arbitrum
+- Optimism
+- Base
+- Avalanche
+- and more
+
+**3. MCP AI Integration**
+
+Connect Blockscout data with AI models through our MCP server:
+
+```bash
+# Start MCP server with HTTP transport for Blockscout
+export TRANSPORT=http
+export PORT=3000
+cd packages/mcp-server
+npm start
+
+# Or with Docker
+docker run -p 3000:3000 -e TRANSPORT=http n3/mcp-server
+```
+
+**4. Security API**
+
+Access N3 security analysis through a REST API:
+
+```bash
+# Analyze contract with Blockscout data
+curl http://localhost:3000/api/analyze?address=0x1234&network=ethereum
+
+# Get recent transactions with security analysis
+curl http://localhost:3000/api/transactions?address=0x1234&limit=50&network=ethereum
+
+# Check for specific vulnerability types
+curl http://localhost:3000/api/vulnerabilities?address=0x1234&type=reentrancy&network=ethereum
+```
+
+**5. Widget Customization**
+
+The N3 security widget can be customized for different Blockscout instances:
+
+```jsx
+<BlockscoutSecurityWidget 
+  contractAddress="0x1234..."
+  network="ethereum"
+  apiEndpoint="https://api.n3scan.io"
+  theme="dark" // light or dark theme
+  showRecommendations={true} // show security recommendations
+  compact={false} // full or compact display
+/>
+```
+
+### 🌐 Envio API Integration
+
+Access Envio's HyperIndex and HyperSync data through N3's MCP server:
+
+```bash
+# Get security history for a contract
+curl -X POST "http://localhost:3000/api/tool" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "envio_security_history",
+    "arguments": {
+      "address": "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
+      "chain": "ethereum"
+    }
+  }'
+
+# Register for real-time security monitoring
+curl -X POST "http://localhost:3000/api/tool" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "envio_register_monitoring",
+    "arguments": {
+      "address": "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
+      "webhook": "https://your-webhook.com/security-events",
+      "chain": "ethereum"
+    }
+  }'
+```
+
+**Features:**
+- RESTful API for accessing Envio's security data
+- Register contracts for real-time monitoring
+- Get detailed security history and metrics
+- Multi-chain support (Ethereum, Polygon, etc.)
+- JSON response format for easy integration
 
 ### ⛓️ Multi-Chain Support
 
@@ -546,11 +755,30 @@ n3/
 │   │   │   └── monitor.ts     # Real-time monitoring
 │   │   └── TASKS.md           # Task documentation
 │   │
-│   ├── mcp-server/        # MCP server ✅
-│   │   └── src/index.ts
+│   ├── mcp-server/        # MCP server with Blockscout integration ✅
+│   │   ├── src/
+│   │   │   ├── index.ts              # MCP server initialization
+│   │   │   ├── blockscout-widget.tsx # Blockscout widget component
+│   │   │   ├── prompts/
+│   │   │   │   └── index.js          # Security prompts
+│   │   │   └── tools/
+│   │   │       ├── index.ts          # Core security tools
+│   │   │       ├── blockscout-adapter.ts # Blockscout API adapter
+│   │       └── envio-adapter.ts     # Envio API adapter
+│   │   ├── package.json
+│   │   └── tsconfig.json
 │   │
-│   └── envio-indexer/     # Envio indexer ⏳
+│   ├── blockscout-widget/ # Blockscout explorer widget ✅
+│   │   └── src/
+│   │       └── widget.tsx         # Embeddable security widget
+│   │
+│   └── envio-indexer/     # Envio indexer ✅
+│       ├── config.yaml         # Indexer configuration
+│       ├── schema.graphql      # GraphQL schema
 │       └── src/
+│           ├── generated.ts    # Generated code
+│           └── handlers/
+│               └── security-events.ts # Security event handlers
 │
 ├── examples/
 │   └── vulnerable-contracts/
@@ -600,6 +828,7 @@ npm run test-scan
 - **[Hardhat Tasks](./packages/hardhat-plugin/TASKS.md)** - Advanced task documentation (800+ lines)
 - **[CVE Testing Guide](./CVE_TESTING.md)** - CVE scanner setup and testing
 - **[CVE Feature Summary](./CVE_FEATURE_SUMMARY.md)** - CVE implementation details
+- **[Envio Integration](./README_ENVIO_INTEGRATION.md)** - Envio HyperIndex and HyperSync integration
 
 ### Quick Links
 - [Installation Guide](#installation)

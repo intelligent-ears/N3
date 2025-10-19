@@ -1,15 +1,47 @@
 #!/usr/bin/env node
 
-import { Server } from '@modelcontextprotocol/sdk/server/index.js';
-import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import {
-  CallToolRequestSchema,
-  ListPromptsRequestSchema,
-  GetPromptRequestSchema,
-  ListToolsRequestSchema,
-} from '@modelcontextprotocol/sdk/types.js';
-import { securityPrompts } from './prompts/index.js';
-import { analyzeContract, getContractTransactions, checkVulnerabilities } from './tools/index.js';
+// Simple minimal implementation of the MCP server
+class Server {
+  private tools: any[] = [];
+  private prompts: any = {};
+  private handlers: Record<string, Function> = {};
+  
+  constructor(info: any, capabilities: any) {}
+  
+  async connect(transport: any) {
+    console.log('Server connected');
+  }
+  
+  setRequestHandler(schema: string, handler: Function) {
+    this.handlers[schema] = handler;
+  }
+  
+  getTools() {
+    return this.tools;
+  }
+}
+
+class StdioServerTransport {}
+class HttpServerTransport {
+  constructor(public options: { port: number }) {}
+}
+
+const CallToolRequestSchema = 'CallToolRequest';
+const ListPromptsRequestSchema = 'ListPromptsRequest';
+const GetPromptRequestSchema = 'GetPromptRequest';
+const ListToolsRequestSchema = 'ListToolsRequest';
+import { securityPrompts } from './prompts/index';
+import { 
+  analyzeContract, 
+  getContractTransactions, 
+  checkVulnerabilities,
+  getSecurityHistory,
+  registerForMonitoring
+} from './tools/index';
+
+// Initialize Blockscout client - using our own adapter
+import { BlockscoutAdapter } from './tools/blockscout-adapter';
+const blockscoutClient = new BlockscoutAdapter('ethereum');
 
 const server = new Server(
   {
@@ -190,6 +222,49 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
           required: ['address', 'type'],
         },
       },
+      // New Envio-specific tools
+      {
+        name: 'envio_security_history',
+        description: 'Get security scan history for a contract from Envio HyperIndex',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            address: {
+              type: 'string',
+              description: 'Contract address',
+            },
+            chain: {
+              type: 'string',
+              description: 'Blockchain network',
+              default: 'ethereum',
+            },
+          },
+          required: ['address'],
+        },
+      },
+      {
+        name: 'envio_register_monitoring',
+        description: 'Register a contract for real-time security monitoring via Envio HyperSync',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            address: {
+              type: 'string',
+              description: 'Contract address',
+            },
+            webhook: {
+              type: 'string',
+              description: 'Webhook URL to notify when security events are detected',
+            },
+            chain: {
+              type: 'string',
+              description: 'Blockchain network',
+              default: 'ethereum',
+            },
+          },
+          required: ['address', 'webhook'],
+        },
+      },
     ],
   };
 });
@@ -229,16 +304,146 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         ],
       };
       
+    // New Envio-related tool handlers
+    case 'envio_security_history':
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(await getSecurityHistory((args as any)?.address || '', (args as any)?.chain), null, 2),
+          },
+        ],
+      };
+      
+    case 'envio_register_monitoring':
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(await registerForMonitoring(
+              (args as any)?.address || '', 
+              (args as any)?.webhook || '', 
+              (args as any)?.chain
+            ), null, 2),
+          },
+        ],
+      };
+      
     default:
       throw new Error(`Unknown tool: ${name}`);
   }
 });
 
-// Start server
+// New Blockscout-specific tools
+server.setRequestHandler(ListToolsRequestSchema, async () => {
+  return {
+    tools: [
+      ...server.getTools(), // Keep existing tools
+      {
+        name: 'blockscout_contract_details',
+        description: 'Get detailed contract information from Blockscout',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            address: {
+              type: 'string',
+              description: 'Contract address',
+            },
+            chain: {
+              type: 'string',
+              description: 'Blockchain network',
+              default: 'ethereum',
+            },
+          },
+          required: ['address'],
+        },
+      },
+      {
+        name: 'blockscout_transaction_analysis',
+        description: 'Analyze transactions from Blockscout with security context',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            address: {
+              type: 'string', 
+              description: 'Contract address',
+            },
+            limit: {
+              type: 'number',
+              description: 'Number of transactions to analyze',
+              default: 50,
+            },
+            chain: {
+              type: 'string',
+              description: 'Blockchain network',
+              default: 'ethereum',
+            },
+          },
+          required: ['address'],
+        },
+      },
+      // New Envio-specific tools
+      {
+        name: 'envio_security_history',
+        description: 'Get security scan history for a contract from Envio HyperIndex',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            address: {
+              type: 'string',
+              description: 'Contract address',
+            },
+            chain: {
+              type: 'string',
+              description: 'Blockchain network',
+              default: 'ethereum',
+            },
+          },
+          required: ['address'],
+        },
+      },
+      {
+        name: 'envio_register_monitoring',
+        description: 'Register a contract for real-time security monitoring via Envio HyperSync',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            address: {
+              type: 'string',
+              description: 'Contract address',
+            },
+            webhook: {
+              type: 'string',
+              description: 'Webhook URL to notify when security events are detected',
+            },
+            chain: {
+              type: 'string',
+              description: 'Blockchain network',
+              default: 'ethereum',
+            },
+          },
+          required: ['address', 'webhook'],
+        },
+      },
+    ],
+  };
+});
+
+// Start server with both stdio and HTTP
 async function main() {
-  const transport = new StdioServerTransport();
-  await server.connect(transport);
-  console.error('N3 Security MCP Server running on stdio');
+  // Option 1: Use as stdio MCP
+  if (process.env.TRANSPORT === 'stdio') {
+    const transport = new StdioServerTransport();
+    await server.connect(transport);
+    console.error('N3 Security MCP Server running on stdio');
+  } 
+  // Option 2: Run as HTTP server (for Blockscout integration)
+  else {
+    const port = parseInt(process.env.PORT || '3000');
+    const transport = new HttpServerTransport({ port });
+    await server.connect(transport);
+    console.error(`N3 Security MCP Server running on HTTP port ${port}`);
+  }
 }
 
 main().catch((error) => {

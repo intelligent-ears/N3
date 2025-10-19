@@ -1,6 +1,43 @@
 # README Update Summary
 
-## ✅ Changes Made
+## ✅ Recent Updates
+
+### Envio Integration: Enhanced Security Analytics for Smart Contracts
+
+This update introduces a powerful integration with Envio's HyperIndex and HyperSync capabilities to enhance N3's security scanning capabilities.
+
+#### Key Features
+
+1. **Historical Security Analysis**
+   - Query comprehensive security scan history from Envio's HyperIndex
+   - Access aggregated security metrics for smart contracts
+   - Track security risk trends over time
+
+2. **Real-time Security Monitoring**
+   - Register contracts for real-time security monitoring via HyperSync
+   - Receive webhook notifications for security events
+   - Monitor for new vulnerabilities as they're discovered
+
+3. **Enhanced Vulnerability Detection**
+   - Access indexed vulnerability event data for deeper insights
+   - Get detailed severity ratings and vulnerability context
+   - Fall back to local analysis when Envio data is unavailable
+
+#### Implementation Details
+
+- **New `EnvioAdapter` Class**: Direct interaction with Envio's APIs
+- **High-level Integration Functions**: Simple interfaces with fallback mechanisms
+- **MCP Server Endpoints**: HTTP API for Envio integration
+- **TypeScript Interfaces**: Properly typed data structures for security events
+- **Test Scripts**: Dedicated test scripts for verifying the integration
+
+#### Documentation
+
+Full documentation is available in [README_ENVIO_INTEGRATION.md](./README_ENVIO_INTEGRATION.md).
+
+---
+
+## ✅ Previous Changes
 
 The README.md has been comprehensively updated to reflect all current features and capabilities of N3.
 
