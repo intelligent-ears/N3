@@ -1,0 +1,22 @@
+#!/usr/bin/env node
+
+/**
+ * N3 - Nuclei for Web3 CLI Runner
+ * This script launches the CLI and passes all command line arguments
+ */
+
+const path = require('path');
+const fs = require('fs');
+
+// Calculate the path to the compiled CLI
+const cliPath = path.resolve(__dirname, '../packages/cli/dist/cli.js');
+
+if (!fs.existsSync(cliPath)) {
+  console.error('\x1b[31mError: CLI not found at ' + cliPath);
+  console.error('Make sure to build the CLI package before running this command:');
+  console.error('  npm run build:cli\x1b[0m');
+  process.exit(1);
+}
+
+// Execute the CLI with all arguments passed through
+require(cliPath);

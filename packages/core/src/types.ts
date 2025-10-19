@@ -38,7 +38,8 @@ export type HardhatConfig = z.infer<typeof HardhatConfigSchema>;
 
 export const RiskCalculationSchema = z.object({
   base_score: z.number().min(0).max(100),
-  modifiers: z.record(z.number()).optional(),
+  // modifiers is a record of string keys to numeric modifier values
+  modifiers: z.record(z.string(), z.number()).optional(),
 });
 export type RiskCalculation = z.infer<typeof RiskCalculationSchema>;
 

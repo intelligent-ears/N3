@@ -13,7 +13,7 @@ export class RiskCalculator {
         // For now, return base score if vulnerabilities found
         if (findings.length === 0) {
           // No vulnerability found, apply all positive modifiers
-          const modifierValues = Object.values(template.risk_calculation.modifiers);
+          const modifierValues = Object.values(template.risk_calculation.modifiers) as number[];
           score += modifierValues.reduce((sum: number, val: number) => sum + val, 0);
         }
       }
