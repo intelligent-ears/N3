@@ -1,0 +1,11 @@
+id: SWC-120
+info:
+  name: Weak Sources of Randomness from Chain Attributes
+  author: N3
+  severity: critical
+  description:
+	Ability to generate random numbers is very helpful in all kinds of applications.	 One obvious example is gambling DApps, where pseudo-random number generator is 	used to pick the winner. However, creating a strong enough source of randomness 	in Ethereum is very challenging. For example, use of `block.timestamp` is 	insecure, as a miner can choose to provide any timestamp within a few seconds 	and still get his block accepted by others. Use of `blockhash`, 	`block.difficulty` and other fields is also insecure, as they're controlled by 	the miner. If the stakes are high, the miner can mine lots of blocks in a short 	time by renting hardware, pick the block that has required block hash for him to	 win, and drop all others.
+  references:
+	-How can I securely generate a random number in my smart contract?: https://ethereum.stackexchange.com/questions/191/how-can-i-securely-generate-a-random-number-in-my-smart-contract
+	-When can BLOCKHASH be safely used for a random number? When would it be unsafe?: https://ethereum.stackexchange.com/questions/419/when-can-blockhash-be-safely-used-for-a-random-number-when-would-it-be-unsafe
+	-The Run smart contract: https://etherscan.io/address/0xcac337492149bdb66b088bf5914bedfbf78ccc18

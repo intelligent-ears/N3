@@ -1,0 +1,10 @@
+id: SWC-135
+info:
+  name: Code With No Effects
+  author: N3
+  severity: critical
+  description:
+	In Solidity, it's possible to write code that does not produce the intended 	effects. Currently, the solidity compiler will not return a warning for 	effect-free code. This can lead to the introduction of "dead" code that does not	 properly perform an intended action.
+  references:
+	-Issue on Solidity's Github - raise an error when a statement can never have side-effects: https://github.com/ethereum/solidity/issues/2707
+	-Issue on Solidity's Github - msg.sender.call.value(address(this).balance); should produce a warning: https://github.com/ethereum/solidity/issues/7096

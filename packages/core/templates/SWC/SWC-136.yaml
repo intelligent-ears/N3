@@ -1,0 +1,11 @@
+id: SWC-136
+info:
+  name: Unencrypted Private Data On-Chain
+  author: N3
+  severity: critical
+  description:
+	It is a common misconception that `private` type variables cannot be read. Even 	if your contract is not published, attackers can look at contract transactions 	to determine values stored in the state of the contract. For this reason, it's 	important that unencrypted private data is not stored in the contract code or 	state.
+  references:
+	-CWE-767: Access to Critical Private Variable via Public Method: https://cwe.mitre.org/data/definitions/767.html
+	-EthTrust Security Levels - **[Q] No Private Data**: https://entethalliance.github.io/eta-registry/security-levels-spec.html#req-3-no-private-data
+	-EthTrust Security Levels - **[Q] Enforce Least Privilege**: https://entethalliance.github.io/eta-registry/security-levels-spec.html#req-3-access-control

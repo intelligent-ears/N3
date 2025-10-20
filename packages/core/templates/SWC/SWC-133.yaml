@@ -1,0 +1,10 @@
+id: SWC-133
+info:
+  name: Hash Collisions With Multiple Variable Length Arguments
+  author: N3
+  severity: critical
+  description:
+	Using `abi.encodePacked()` with multiple variable length arguments can, in 	certain situations, lead to a hash collision. Since `abi.encodePacked()` packs 	all elements in order regardless of whether they're part of an array, you can 	move elements between arrays and, so long as all elements are in the same order,	 it will return the same encoding. In a signature verification situation, an 	attacker could exploit this by modifying the position of elements in a previous 	function call to effectively bypass authorization.
+  references:
+	-Solidity Non-standard Packed Mode: https://solidity.readthedocs.io/en/v0.5.3/abi-spec.html#non-standard-packed-mode
+	-Hash Collision Attack: https://learncryptography.com/hash-functions/hash-collision-attack
