@@ -1,0 +1,10 @@
+id: SWC-109
+info:
+  name: Uninitialized Storage Pointer
+  author: N3
+  severity: critical
+  description:
+  Uninitialized local storage variables can point to unexpected storage locations 	in the contract, which can lead to intentional or unintentional vulnerabilities.
+  references:
+	-SigmaPrime - Uninitialised Storage Pointers: https://github.com/sigp/solidity-security-blog#unintialised-storage-pointers-1
+

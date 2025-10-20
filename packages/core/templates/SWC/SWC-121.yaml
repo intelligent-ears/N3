@@ -1,0 +1,10 @@
+id: SWC-121
+info:
+  name: Missing Protection against Signature Replay Attacks
+  author: N3
+  severity: critical
+  description:
+	It is sometimes necessary to perform signature verification in smart contracts 	to achieve better usability or to save gas cost. A secure implementation needs 	to protect against Signature Replay Attacks by for example keeping track of all 	processed message hashes and only allowing new message hashes to be processed. A	 malicious user could attack a contract without such a control and get message 	hash that was sent by another user processed multiple times.
+  references:
+	-Medium - Replay Attack Vulnerability in Ethereum Smart Contracts Introduced by transferProxy(): https://medium.com/cypher-core/replay-attack-vulnerability-in-ethereum-smart-contracts-introduced-by-transferproxy-124bf3694e25
+

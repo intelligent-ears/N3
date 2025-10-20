@@ -1,0 +1,11 @@
+id: SWC-132
+info:
+  name: Unexpected Ether balance
+  author: N3
+  severity: critical
+  description:
+	Contracts can behave erroneously when they strictly assume a specific Ether 	balance. It is always possible to forcibly send ether to a contract (without 	triggering its fallback function), using selfdestruct, or by mining to the 	account. In the worst case scenario this could lead to DOS conditions that might	 render the contract unusable.
+  references:
+	-Consensys Best Practices: Force Feeding: https://consensys.github.io/smart-contract-best-practices/attacks/force-feeding
+	-Sigmaprime: Unexpected Ether: https://blog.sigmaprime.io/solidity-security.html#ether
+	-Gridlock (a smart contract bug): https://medium.com/@nmcl/gridlock-a-smart-contract-bug-73b8310608a9

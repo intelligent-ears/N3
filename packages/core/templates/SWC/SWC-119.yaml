@@ -1,0 +1,13 @@
+id: SWC-119
+info:
+  name: Shadowing State Variables
+  author: N3
+  severity: critical
+  description:
+	Solidity allows for ambiguous naming of state variables when inheritance is used.	 Contract `A` with a variable `x` could inherit contract `B` that also has a 	state variable `x` defined. This would result in two separate versions of `x`, 	one of them being accessed from contract `A` and the other one from contract `B`.	 In more complex contract systems this condition could go unnoticed and 	subsequently lead to security issues.
+
+Shadowing state variables can also occur within a single contract when there are	 multiple definitions on the contract and function level.
+  references:
+	-Issue on Solidity's Github - Shadowing of inherited state variables should be an error (override keyword): https://github.com/ethereum/solidity/issues/2563
+	-Issue on Solidity's Github - Warn about shadowing state variables: https://github.com/ethereum/solidity/issues/973
+

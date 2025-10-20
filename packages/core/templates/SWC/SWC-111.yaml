@@ -1,0 +1,14 @@
+id: SWC-111
+info:
+  name: Use of Deprecated Solidity Functions
+  author: N3
+  severity: critical
+  description:
+  Several functions and operators in Solidity are deprecated. Using them leads to 	reduced code quality. With new major versions of the Solidity compiler, deprecated	 functions and operators may result in side effects and compile errors.
+  references:
+	-List of global variables and functions, as of Solidity 0.4.25: https://solidity.readthedocs.io/en/v0.4.25/miscellaneous.html#global-variables
+	-Error handling: Assert, Require, Revert and Exceptions: https://solidity.readthedocs.io/en/v0.4.25/control-structures.html#error-handling-assert-require-revert-and-exceptions
+	-View functions: https://solidity.readthedocs.io/en/v0.4.25/contracts.html#view-functions
+	-Untyped declaration is deprecated as of Solidity 0.4.20: https://github.com/ethereum/solidity/releases/tag/v0.4.20
+	-Solidity compiler changelog: https://github.com/ethereum/solidity/releases
+

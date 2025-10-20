@@ -1,0 +1,10 @@
+id: SWC-104
+info:
+  name: Unchecked Call Return Value
+  author: N3
+  severity: critical
+  description: 
+  The return value of a message call is not checked. Execution will resume even if	 the called contract throws an exception. If the call fails accidentally or an 	attacker forces the call to fail, this may cause unexpected behaviour in the 	subsequent program logic.
+  references:
+	-Ethereum Smart Contract Best Practices - Handle errors in external calls: https://consensys.github.io/smart-contract-best-practices/development-recommendations/general/external-calls/#handle-errors-in-external-calls
+
