@@ -9,4 +9,3 @@ info:
 	-How can I securely generate a random number in my smart contract?: https://ethereum.stackexchange.com/questions/191/how-can-i-securely-generate-a-random-number-in-my-smart-contract
 	-When can BLOCKHASH be safely used for a random number? When would it be unsafe?: https://ethereum.stackexchange.com/questions/419/when-can-blockhash-be-safely-used-for-a-random-number-when-would-it-be-unsafe
 	-The Run smart contract: https://etherscan.io/address/0xcac337492149bdb66b088bf5914bedfbf78ccc18
-

@@ -8,4 +8,3 @@ info:
   references:
 	-Solidity Non-standard Packed Mode: https://solidity.readthedocs.io/en/v0.5.3/abi-spec.html#non-standard-packed-mode
 	-Hash Collision Attack: https://learncryptography.com/hash-functions/hash-collision-attack
-

@@ -7,4 +7,3 @@ info:
   Due to missing or insufficient access controls, malicious parties can self-destruct the contract.
   reference:
 	-Parity "I accidentally killed it" bug: https://www.parity.io/a-postmortem-on-the-parity-multi-sig-library-self-destruct
-

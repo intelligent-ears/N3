@@ -11,4 +11,3 @@ info:
 	-View functions: https://solidity.readthedocs.io/en/v0.4.25/contracts.html#view-functions
 	-Untyped declaration is deprecated as of Solidity 0.4.20: https://github.com/ethereum/solidity/releases/tag/v0.4.20
 	-Solidity compiler changelog: https://github.com/ethereum/solidity/releases
-

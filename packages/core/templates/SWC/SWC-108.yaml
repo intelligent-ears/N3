@@ -7,4 +7,3 @@ info:
   Labeling the visibility explicitly makes it easier to catch incorrect 	assumptions about who can access the variable.
   references:
 	-Ethereum Smart Contract Best Practices - Visibility: https://consensys.github.io/smart-contract-best-practices/development-recommendations/solidity-specific/visibility
-

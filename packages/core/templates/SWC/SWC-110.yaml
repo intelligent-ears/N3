@@ -9,4 +9,3 @@ info:
 2. The `assert` statement is used incorrectly, e.g. to validate inputs.
   references: 
 	-The use of revert(), assert(), and require() in Solidity, and the new REVERT opcode in the EVM: https://media.consensys.net/when-to-use-revert-assert-and-require-in-solidity-61fb2c0e5a57
-

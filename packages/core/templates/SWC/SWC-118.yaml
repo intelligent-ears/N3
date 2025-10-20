@@ -8,4 +8,3 @@ info:
 This behavior sometimes leads to security issues, in particular when smart 	contract code is re-used with a different name but the name of the constructor 	function is not changed accordingly.
   references:
 	-SigmaPrime - Constructors with Care: https://blog.sigmaprime.io/solidity-security.html#constructors
-

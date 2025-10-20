@@ -10,4 +10,3 @@ Shadowing state variables can also occur within a single contract when there are
   references:
 	-Issue on Solidity's Github - Shadowing of inherited state variables should be an error (override keyword): https://github.com/ethereum/solidity/issues/2563
 	-Issue on Solidity's Github - Warn about shadowing state variables: https://github.com/ethereum/solidity/issues/973
-

@@ -11,4 +11,3 @@ Programming patterns that are harmless in centralized 	applications can lead to 
 	-Ethereum Yellow Paper: https://ethereum.github.io/yellowpaper/paper.pdf
 	-Clear Large Array Without Blowing Gas Limit: https://ethereum.stackexchange.com/questions/3373/how-to-clear-large-arrays-without-blowing-the-gas-limit
 	-GovernMental jackpot payout DoS Gas: https://www.reddit.com/r/ethereum/comments/4ghzhv/governmentals_1100_eth_jackpot_payout_is_stuck
-
