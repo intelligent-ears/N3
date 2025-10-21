@@ -3,8 +3,7 @@ info:
   name: Function Default Visibility
   author: N3
   severity: critical
-  description: 
-  Functions that do not have a function visibility type specified are `public` by default. This can lead to a vulnerability if a developer forgot to set the visibility and a malicious user is able to make unauthorized or unintended state changes
-  references: 
-    -Ethereum Smart Contract Best Practices - Visibility: https://consensys.github.io/smart-contract-best-practices/development-recommendations/solidity-specific/visibility
-    -SigmaPrime - Visibility: https://github.com/sigp/solidity-security-blog#visibility
+  description: "Functions that do not have a function visibility type specified are `public` by default. This can lead to a vulnerability if a developer forgot to set the visibility and a malicious user is able to make unauthorized or unintended state changes."
+  references:
+    - "Ethereum Smart Contract Best Practices - Visibility: https://consensys.github.io/smart-contract-best-practices/development-recommendations/solidity-specific/visibility"
+    - "SigmaPrime - Visibility: https://github.com/sigp/solidity-security-blog#visibility"
