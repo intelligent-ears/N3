@@ -16,7 +16,7 @@ interface AuditOptions {
 }
 
 task('n3:audit', 'Run comprehensive security audit with optional network simulation')
-  .addOptionalParam('network', 'Network to simulate on (mainnet, polygon, etc.)')
+  .addOptionalParam('targetNetwork', 'Network to simulate on (mainnet, polygon, etc.)')
   .addOptionalParam('output', 'Output file for audit report')
   .addOptionalParam('format', 'Report format (json, html, markdown)', 'markdown')
   .addFlag('simulate', 'Run attack simulations on forked network')

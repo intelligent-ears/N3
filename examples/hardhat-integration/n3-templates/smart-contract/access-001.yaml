@@ -1,0 +1,56 @@
+id: access-001
+name: Missing Access Controls
+severity: high
+category: smart-contract
+tags: [access-control, authorization, onlyOwner]
+description: |
+  Detects critical functions that lack proper access control modifiers,
+  allowing unauthorized users to execute privileged operations.
+
+hardhat:
+  test_file: test/security/AccessControl.t.sol
+  test_function: test_HasProperAccessControl
+  auto_generate: true
+
+detection:
+  patterns:
+    - name: critical_function_without_modifier
+      solidity: |
+        function (mint|burn|setOwner|withdraw|pause)\(
+      check: no_access_modifier
+    - name: missing_only_owner
+      functions: [setOwner, transferOwnership, mint, burn]
+
+risk_calculation:
+  base_score: 85
+  modifiers:
+    has_onlyOwner: -70
+    has_role_based_access: -75
+    uses_access_control: -80
+
+remediation:
+  priority: 1
+  fixes:
+    - Add onlyOwner modifier to privileged functions
+    - Implement OpenZeppelin AccessControl
+    - Use role-based permissions for complex systems
+  code_example: |
+    import "@openzeppelin/contracts/access/Ownable.sol";
+    
+    contract MyToken is Ownable {
+        function mint(address to, uint256 amount) external onlyOwner {
+            _mint(to, amount);
+        }
+        
+        function burn(uint256 amount) external onlyOwner {
+            _burn(msg.sender, amount);
+        }
+    }
+
+references:
+  - https://swcregistry.io/docs/SWC-105
+  - https://docs.openzeppelin.com/contracts/4.x/access-control
+
+examples:
+  vulnerable_contracts:
+    - Parity MultiSig Wallet (2017)

@@ -1,0 +1,63 @@
+id: oracle-001
+name: Price Oracle Manipulation
+severity: critical
+category: defi
+tags: [oracle, price-manipulation, defi]
+description: |
+  Detects vulnerabilities in price oracle usage that could lead to
+  price manipulation attacks and incorrect asset valuations.
+
+hardhat:
+  test_file: test/security/Oracle.t.sol
+  test_function: test_OracleManipulationResistance
+  auto_generate: true
+
+detection:
+  patterns:
+    - name: single_oracle_dependency
+      solidity: |
+        getPrice\(\)
+    - name: no_price_validation
+      solidity: |
+        price\s*=.*getPrice
+    - name: missing_twap
+      check: no_time_weighted_average
+
+risk_calculation:
+  base_score: 90
+  modifiers:
+    uses_multiple_oracles: -40
+    has_price_bounds: -30
+    uses_twap: -35
+
+remediation:
+  priority: 1
+  fixes:
+    - Use multiple oracle sources (Chainlink + Pyth)
+    - Implement price deviation checks
+    - Use Time-Weighted Average Price (TWAP)
+    - Add circuit breakers for extreme price moves
+  code_example: |
+    import "@pythnetwork/pyth-sdk-solidity/IPyth.sol";
+    import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
+    
+    function getPrice() public view returns (uint256) {
+        uint256 pythPrice = getPythPrice();
+        uint256 chainlinkPrice = getChainlinkPrice();
+        
+        // Ensure prices are within 5% of each other
+        uint256 deviation = abs(pythPrice - chainlinkPrice) * 100 / pythPrice;
+        require(deviation < 5, "Price deviation too high");
+        
+        // Return average
+        return (pythPrice + chainlinkPrice) / 2;
+    }
+
+references:
+  - https://blog.chain.link/flash-loans-and-the-importance-of-tamper-proof-oracles/
+  - https://docs.pyth.network/documentation/pythnet-price-feeds/best-practices
+
+examples:
+  vulnerable_contracts:
+    - Cream Finance (2021)
+    - Venus Protocol (2021)

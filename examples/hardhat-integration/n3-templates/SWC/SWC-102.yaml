@@ -1,0 +1,10 @@
+id: SWC-102
+info:
+  name: Outdated Compiler Version
+  author: N3
+  severity: critical
+  description: 
+  Using an outdated compiler version can be problematic especially if there are 	publicly disclosed bugs and issues that affect the current compiler version.
+  references:
+	-Solidity Release Notes: https://github.com/ethereum/solidity/releases
+	-Etherscan Solidity Bug Info: https://etherscan.io/solcbuginfo

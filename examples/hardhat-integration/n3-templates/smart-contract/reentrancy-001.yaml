@@ -1,0 +1,62 @@
+id: reentrancy-001
+name: Reentrancy Vulnerability Detection
+severity: critical
+category: smart-contract
+tags: [reentrancy, external-calls, state-management]
+description: |
+  Detects potential reentrancy attacks where external calls are made
+  before state changes, allowing attackers to recursively call functions.
+
+hardhat:
+  test_file: test/security/Reentrancy.t.sol
+  test_function: test_NoReentrancyVulnerability
+  auto_generate: true
+
+detection:
+  patterns:
+    - name: external_call_before_state_change
+      solidity: |
+        payable(.*).transfer(.*);
+        .*\[.*\]\s*=
+    - name: missing_reentrancy_guard
+      check: no_nonReentrant_modifier
+      functions: [withdraw, claim, redeem]
+    - name: unsafe_transfer_pattern
+      solidity: |
+        payable\(msg\.sender\)\.transfer\(amount\);
+
+risk_calculation:
+  base_score: 90
+  modifiers:
+    has_reentrancy_guard: -80
+    checks_effects_interactions: -70
+    uses_pull_over_push: -50
+
+remediation:
+  priority: 1
+  fixes:
+    - Add nonReentrant modifier from OpenZeppelin
+    - Follow Checks-Effects-Interactions pattern
+    - Use ReentrancyGuard contract
+  code_example: |
+    import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+    
+    function withdraw(uint256 amount) external nonReentrant {
+        require(balance[msg.sender] >= amount);
+        balance[msg.sender] -= amount;  // State change FIRST
+        payable(msg.sender).transfer(amount);  // External call LAST
+    }
+
+references:
+  - https://swcregistry.io/docs/SWC-107
+  - https://consensys.github.io/smart-contract-best-practices/attacks/reentrancy/
+
+examples:
+  vulnerable_contracts:
+    - TheDAO (2016)
+    - Uniswap V1 (specific cases)
+  test_vectors:
+    - contract: test/fixtures/VulnerableBank.sol
+      expected: FAIL
+    - contract: test/fixtures/SecureBank.sol
+      expected: PASS

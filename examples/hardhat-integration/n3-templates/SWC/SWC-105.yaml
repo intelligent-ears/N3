@@ -1,0 +1,9 @@
+id: SWC-105
+info:
+  name: Unprotected Ether Withdrawal
+  author: N3
+  severity: critical
+  description:
+	Due to missing or insufficient access controls, malicious parties can withdraw 	some or all Ether from the contract account. This bug is sometimes caused by 	unintentionally exposing initialization functions. By wrongly naming a function 	intended to be a constructor, the constructor code ends up in the runtime byte 	code and can be called by anyone to re-initialize the contract.
+  references:
+	-Rubixi smart contract: https://etherscan.io/address/0xe82719202e5965Cf5D9B6673B7503a3b92DE20be#code

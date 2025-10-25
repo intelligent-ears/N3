@@ -1,0 +1,11 @@
+id: Swc-126
+info:
+  name: Insufficient Gas Griefing
+  author: N3
+  severity: critical
+  description:
+	Insufficient gas griefing attacks can be performed on contracts which accept 	data and use it in a sub-call on another contract. If the sub-call fails, either	 the whole transaction is reverted, or execution is continued. In the case of a 	relayer contract, the user who executes the transaction, the 'forwarder', can 	effectively censor transactions by using just enough gas to execute the 	transaction, but not enough for the sub-call to succeed.
+  references:
+	-Consensys Smart Contract Best Practices: https://consensys.github.io/smart-contract-best-practices/attacks/griefing
+	-What does griefing mean?: https://ethereum.stackexchange.com/questions/62829/what-does-griefing-mean
+	-Griefing Attacks: Are they profitable for the attacker?: https://ethereum.stackexchange.com/questions/73261/griefing-attacks-are-they-profitable-for-the-attacker

@@ -1,13 +1,27 @@
+# yaml-language-server: $schema=./node_modules/envio/evm.schema.json
 name: n3-security-indexer
 description: N3 Security Vulnerability Tracking Indexer
+contracts:
+  - name: N3SecurityOracle
+    abi_file_path: ./abis/n3-security-oracle-abi.json
+    handler: ./src/EventHandlers.ts
+    events:
+      - event: VulnerabilityDetected
+      - event: SecurityScanCompleted
+      - event: ContractDeployed
 networks:
-  - id: 1
-    start_block: 18000000
+  - id: 31337 # Local Hardhat
+    start_block: 0
+    rpc_config:
+      url: http://127.0.0.1:8545
     contracts:
       - name: N3SecurityOracle
-        address: "0x0000000000000000000000000000000000000000"  # To be deployed
-        handler: src/handlers/security-events.ts
-        events:
-          - event: VulnerabilityDetected(address indexed contractAddress, string vulnType, uint8 severity, uint256 timestamp)
-          - event: SecurityScanCompleted(address indexed contractAddress, uint256 riskScore, uint256 timestamp)
-          - event: ContractDeployed(address indexed contractAddress, address indexed deployer, uint256 timestamp)
+        address: "0x5FbDB2315678afecb367f032d93F642f64180aa3"
+unordered_multichain_mode: false
+# Preload optimisation makes your indexer much faster.
+# But be aware that your handlers will run twice,
+# so make sure to use Effect API for external calls.
+preload_handlers: true
+# Address format for Ethereum addresses: 'checksum' or 'lowercase'
+# using lowercase addresses is slightly faster
+address_format: lowercase

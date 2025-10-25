@@ -1,0 +1,12 @@
+id: SWC-114
+info:
+  name: Transaction Order Dependence
+  author: N3
+  severity: critical
+  description:
+	The Ethereum network processes transactions in blocks, with new blocks getting 	confirmed approximately every 17 seconds. Miners review the transactions they 	have received and select which ones to include in a block, based on who has paid	 a high enough gas price to be included. Additionally, when transactions are 	sent to the Ethereum network, they are forwarded to each node for processing. 	Thus, a person who is running an Ethereum node can tell which transactions are 	going to occur before they are finalized. A race condition vulnerability occurs 	when code depends on the order of the transactions submitted to it.
+
+The race condition that happens most frequently on the network today is the race	 condition in the ERC20 token standard. The ERC20 token standard includes a 	function called 'approve', which allows an address to approve another address to	 spend tokens on their behalf.
+  references:
+	-General Article on Race Conditions: https://medium.com/coinmonks/solidity-transaction-ordering-attacks-1193a014884e
+	-ERC20 Race Condition: https://docs.google.com/document/d/1YLPtQxZu1UAvO9cZ1O2RPXBbT0mooh4DYKjA_jp-RLM/edit#

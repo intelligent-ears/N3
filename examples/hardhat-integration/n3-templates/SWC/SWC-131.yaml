@@ -1,0 +1,13 @@
+id: SWC-131
+info:
+  name: Presence of unused variables
+  author: N3
+  severity: critical
+  description:
+	Unused variables are allowed in Solidity and they do not pose a direct security 	issue. It is best practice though to avoid them as they can:
+		-cause an increase in computations (and unnecessary gas consumption)
+		-indicate bugs or malformed data structures and they are generally a sign of 	poor code quality
+		-cause code noise and decrease readability of the code
+  references:
+	-Unused local variables warnings discussion: https://github.com/ethereum/solidity/issues/718
+	-Shadowing of inherited state variables discussion: https://github.com/ethereum/solidity/issues/2563

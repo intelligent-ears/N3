@@ -1,0 +1,9 @@
+id: SWC-107
+info:
+  name: Reentrancy
+  author: N3
+  severity: critical
+  description:
+  One of the major dangers of calling external contracts is that they can take 	over the control flow. In the reentrancy attack (a.k.a. recursive call attack), 	a malicious contract calls back into the calling contract before the first 	invocation of the function is finished. This may cause the different invocations	 of the function to interact in undesirable ways.
+  references:
+	-Ethereum Smart Contract Best Practices - Reentrancy: https://consensys.github.io/smart-contract-best-practices/attacks/reentrancy

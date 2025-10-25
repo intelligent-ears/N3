@@ -1,69 +1,26 @@
-type SecurityScan @entity {
-  id: ID!
-  contractAddress: String!
-  chainId: Int!
-  scanTimestamp: BigInt!
-  templateId: String!
-  severity: SeverityLevel!
-  status: ScanStatus!
-  riskScore: Int!
-  details: String!
-  txHash: String
-}
-
 type VulnerabilityEvent @entity {
   id: ID!
   contractAddress: String!
   vulnerabilityType: String!
-  severity: SeverityLevel!
+  severity: String!
   detectedAt: BigInt!
   blockNumber: BigInt!
   txHash: String!
-  exploited: Boolean!
-  remediationStatus: RemediationStatus!
+}
+
+type SecurityScan @entity {
+  id: ID!
+  contractAddress: String!
+  riskScore: Int!
+  timestamp: BigInt!
+  txHash: String!
 }
 
 type SecurityMetric @entity {
   id: ID!
-  contractAddress: String!
   totalScans: Int!
-  criticalIssues: Int!
-  highIssues: Int!
-  mediumIssues: Int!
-  lowIssues: Int!
-  averageRiskScore: Int!
-  lastScanTimestamp: BigInt!
-  firstScanTimestamp: BigInt!
-}
-
-type ContractDeployment @entity {
-  id: ID!
-  contractAddress: String!
-  deployer: String!
-  deployedAt: BigInt!
-  blockNumber: BigInt!
-  txHash: String!
-  initialRiskScore: Int
-}
-
-enum SeverityLevel {
-  CRITICAL
-  HIGH
-  MEDIUM
-  LOW
-  INFO
-}
-
-enum ScanStatus {
-  PASS
-  FAIL
-  WARNING
-  SKIPPED
-}
-
-enum RemediationStatus {
-  OPEN
-  IN_PROGRESS
-  RESOLVED
-  WONT_FIX
+  criticalCount: Int!
+  highCount: Int!
+  mediumCount: Int!
+  lowCount: Int!
 }

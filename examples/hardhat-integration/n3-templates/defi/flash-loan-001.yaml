@@ -1,0 +1,65 @@
+id: defi-001
+name: Flash Loan Attack Vectors
+severity: critical
+category: defi
+tags: [flash-loan, defi, lending]
+description: |
+  Detects vulnerabilities that can be exploited through flash loans,
+  including missing fees, same-block exploits, and unprotected borrows.
+
+hardhat:
+  test_file: test/security/FlashLoan.t.sol
+  test_function: test_FlashLoanProtection
+  auto_generate: true
+
+detection:
+  patterns:
+    - name: unprotected_borrow
+      solidity: |
+        function borrow\(
+      check: no_flash_loan_fee
+    - name: missing_same_block_protection
+      solidity: |
+        function (borrow|repay)\(
+    - name: no_collateral_check
+      solidity: |
+        function borrow\(
+
+risk_calculation:
+  base_score: 95
+  modifiers:
+    has_flash_loan_fee: -70
+    uses_timestamp_checks: -20
+    requires_collateral: -30
+
+remediation:
+  priority: 1
+  fixes:
+    - Implement flash loan fee (0.09% standard)
+    - Add same-block protection
+    - Require minimum time between borrow/repay
+    - Enforce proper collateralization
+  code_example: |
+    mapping(address => uint256) public lastBorrowBlock;
+    
+    function borrow(uint256 amount) external nonReentrant {
+        require(
+            block.number > lastBorrowBlock[msg.sender],
+            "Flash loan protection"
+        );
+        
+        uint256 fee = amount * 9 / 10000; // 0.09%
+        require(balanceOf[msg.sender] >= fee, "Insufficient fee");
+        
+        lastBorrowBlock[msg.sender] = block.number;
+        token.transfer(msg.sender, amount);
+    }
+
+references:
+  - https://consensys.github.io/smart-contract-best-practices/attacks/frontrunning/
+  - https://www.paradigm.xyz/2020/08/ethereum-is-a-dark-forest
+
+examples:
+  vulnerable_contracts:
+    - bZx Protocol (2020)
+    - Harvest Finance (2020)
