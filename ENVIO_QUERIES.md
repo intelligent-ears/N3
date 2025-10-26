@@ -433,9 +433,3 @@ You can add custom logic to process events as they're indexed.
 - **GraphQL Schema**: `packages/envio-indexer/schema.graphql`
 - **Event Handlers**: `packages/envio-indexer/src/handlers/`
 
----
-
-**Run the demo:**
-```bash
-node demo-envio-integration.js
-```

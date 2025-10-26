@@ -990,17 +990,3 @@ Now you have:
 
 All three integrations use **N3's template-based scanner** as their core engine, delivering scan results through different channels to cover the entire smart contract lifecycle.
 
----
-
-## Next Steps
-
-1. **Customize Templates**: Create project-specific vulnerability patterns
-2. **Set Up CI/CD**: Automate template scanning in GitHub Actions
-3. **Deploy Autoscout**: Get custom Blockscout instance
-4. **Build Dashboard**: Use Envio GraphQL for analytics
-5. **Integrate Alerts**: Connect webhooks for real-time notifications
-
-For more information:
-- [Template Creation Guide](./docs/TEMPLATES.md)
-- [API Documentation](./docs/API.md)
-- [Hackathon Status](./HACKATHON_STATUS.md)
