@@ -4,8 +4,6 @@
 > *From Development to Deployment - Continuous Security at Every Stage*
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Hardhat 3](https://img.shields.io/badge/Hardhat-3.0.9-yellow)](https://hardhat.org/)
-[![Node 22](https://img.shields.io/badge/Node-22.21-green)](https://nodejs.org/)
 [![Built for ETHGlobal](https://img.shields.io/badge/Built%20for-ETHGlobal%202025-blue)](https://ethglobal.com)
 
 ---
@@ -18,11 +16,11 @@
 
 Traditional scanners have fixed, hardcoded rules. N3 lets you:
 
-- ✅ **Create custom templates** for new vulnerability patterns
-- ✅ **Share templates** across teams and communities
-- ✅ **Update detection logic** without changing code
-- ✅ **Combine multiple templates** for comprehensive scans
-- ✅ **Calculate risk scores** based on template matches
+-  **Create custom templates** for new vulnerability patterns
+-  **Share templates** across teams and communities
+-  **Update detection logic** without changing code
+-  **Combine multiple templates** for comprehensive scans
+-  **Calculate risk scores** based on template matches
 
 ### Example Template
 
@@ -100,24 +98,6 @@ N3's template engine integrates seamlessly across the development workflow:
 └─────────────────────────────┘
 ```
 
-### 3. Hackathon Track Integration
-
-#### 🔍 Blockscout Track ($10,000)
-
-- **MCP Server** ($3,500): AI-powered security analysis via Model Context Protocol
-- **Blockscout Widget** ($3,500): Visual security dashboard on block explorer
-- **SDK Integration** ($3,000): Enhanced contract interaction UIs
-
-#### ⚡ Envio Track ($5,000)
-
-- **HyperIndex** ($1,500): Real-time indexing of security scan events
-- **AI Dashboard** ($3,500): GraphQL-powered analytics interface
-
-#### 🛠️ Hardhat Track ($5,000)
-
-- **Hardhat 3.x Plugin**: Automatic template scanning during compilation
-- **Build-Time Security**: Catch vulnerabilities before deployment
-
 ---
 
 ## 📦 Architecture
@@ -125,7 +105,7 @@ N3's template engine integrates seamlessly across the development workflow:
 ```
 N3/
 ├── packages/
-│   ├── core/                 # 🎯 TEMPLATE ENGINE (Core)
+│   ├── core/                 #  TEMPLATE ENGINE (Core)
 │   │   ├── templates/        #    40+ YAML templates
 │   │   │   ├── SWC/         #    Smart Contract Weakness
 │   │   │   ├── defi/        #    DeFi attack patterns
@@ -136,11 +116,11 @@ N3/
 │   │   │   └── risk-calculator.ts # CVSS-based scoring
 │   │   └── cve-templates/   #    CVE definitions
 │   │
-│   ├── cli/                  # 💻 Command-line scanner
-│   ├── hardhat-plugin/       # 🔨 Hardhat 3 integration
-│   ├── mcp-server/           # 🤖 AI Model Context Protocol
-│   ├── blockscout-widget/    # 📊 Explorer visualization
-│   └── envio-indexer/        # ⚡ Real-time event indexing
+│   ├── cli/                  #  Command-line scanner
+│   ├── hardhat-plugin/       #  Hardhat 3 integration
+│   ├── mcp-server/           #  AI Model Context Protocol
+│   ├── blockscout-widget/    #  Explorer visualization
+│   └── envio-indexer/        #  Real-time event indexing
 │
 ├── contracts/
 │   └── N3SecurityOracle.sol  # On-chain scan result storage
@@ -157,7 +137,7 @@ N3/
 |-----------|-----------|---------|---------|
 | **Smart Contracts** | Hardhat | 3.0.9 | Development & deployment |
 | **Indexing** | Envio HyperIndex | 2.31.0 | Event monitoring |
-| **AI Integration** | MCP SDK | 1.20.2 | AI-powered analysis |
+| **AI Integration** | Blockscout SDK | 1.20.2 | AI-powered analysis |
 | **Explorer** | Blockscout | API + Widget | Block explorer integration |
 | **Database** | PostgreSQL | 17.5 | Event storage |
 | **API** | Hasura GraphQL | 2.43.0 | Query interface |
@@ -356,39 +336,39 @@ N3 includes comprehensive template coverage across multiple categories:
 
 ### Smart Contract Weaknesses (SWC)
 
-- ✅ SWC-101: Integer Overflow/Underflow
-- ✅ SWC-107: Reentrancy
-- ✅ SWC-115: Authorization through tx.origin
-- ✅ SWC-116: Timestamp Dependence
-- ✅ SWC-120: Weak Sources of Randomness
-- ✅ SWC-134: Message call with hardcoded gas
+-  SWC-101: Integer Overflow/Underflow
+-  SWC-107: Reentrancy
+-  SWC-115: Authorization through tx.origin
+-  SWC-116: Timestamp Dependence
+-  SWC-120: Weak Sources of Randomness
+-  SWC-134: Message call with hardcoded gas
 - ... and 15+ more
 
 ### DeFi Attack Patterns
 
-- ✅ Flash Loan Attacks
-- ✅ Oracle Manipulation
-- ✅ Price Manipulation
-- ✅ Front-running vulnerabilities
-- ✅ Sandwich attacks
-- ✅ MEV exploitation
+-  Flash Loan Attacks
+-  Oracle Manipulation
+-  Price Manipulation
+-  Front-running vulnerabilities
+-  Sandwich attacks
+-  MEV exploitation
 - ... and more
 
 ### General Smart Contract Issues
 
-- ✅ Uninitialized storage pointers
-- ✅ Delegate call issues
-- ✅ Selfdestruct vulnerabilities
-- ✅ Gas optimization patterns
-- ✅ Upgrade pattern violations
-
+-  Uninitialized storage pointers
+-  Delegate call issues
+-  Selfdestruct vulnerabilities
+-  Gas optimization patterns
+-  Upgrade pattern violations
+	
 ---
 
 ## 📊 Risk Scoring
 
 N3 uses a CVSS-inspired risk calculation methodology:
 
-```
+```bash
 Risk Score = Σ (Template_Match_Score × Severity_Weight)
 
 Severity Weights:
@@ -447,48 +427,7 @@ references:
 - [**Quick Reference**](./QUICK_REFERENCE.md) - Essential commands and workflows
 - [**Integration Guide**](./INTEGRATION_GUIDE.md) - Platform integrations (1006 lines)
 - [**Architecture**](./ARCHITECTURE.md) - System design and components
-- [**Demo Script**](./DEMO_SCRIPT.md) - Live demo walkthrough
-- [**Pitch Materials**](./PITCH_README.md) - Hackathon presentation guide
 
----
-
-## 🏆 Hackathon Integration Details
-
-### Hardhat 3.x Integration ($5,000)
-
-**Why we're applicable:**
-- Built a full-featured Hardhat plugin for version 3.0.9
-- Extends Hardhat's compilation workflow with security scanning
-- Custom tasks: `scan`, `audit`, `monitor`, `test:generate`
-- Automatic vulnerability detection during `compile`
-
-**Code:** `packages/hardhat-plugin/src/index.ts`
-
-**Ease of use:** 9/10 - Hardhat's API is excellent, TypeScript support is first-class
-
-### Blockscout MCP Server ($10,000)
-
-**Why we're applicable:**
-- Created MCP server bridging Blockscout API + N3 scanner + AI assistants
-- Enables conversational security analysis: "Analyze contract 0x..."
-- Fetches contract source, verification status, and runs vulnerability scans
-- Express REST API on port 3000
-
-**Code:** `mcp-blockscout-server.mjs` (lines 92-150 for `/api/analyze`)
-
-**Ease of use:** 8/10 - Blockscout API is well-structured, added MCP wrapper for AI integration
-
-### Envio HyperIndex ($5,000)
-
-**Why we're applicable:**
-- Real-time vulnerability indexer for N3SecurityOracle events
-- TypeScript event handlers processing `VulnerabilityDetected`, `SecurityScanCompleted`
-- GraphQL schema for queryable security analytics
-- PostgreSQL + Hasura for instant dashboards
-
-**Code:** `packages/envio-indexer/src/EventHandlers.ts` (lines 4-17 for event processing)
-
-**Ease of use:** 7/10 - Powerful but had ReScript dependency challenges, TypeScript mode works great
 
 ---
 
@@ -516,5 +455,5 @@ MIT License - see [LICENSE](./LICENSE) for details
 ---
 
 <div align="center">
-  <strong>N3: Securing Web3, One Template at a Time</strong> 🛡️
+  <strong>N3: Securing Web3, Templates for security</strong> 🛡️
 </div>

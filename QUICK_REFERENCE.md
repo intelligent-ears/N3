@@ -390,8 +390,4 @@ cd packages/envio-indexer && envio dev &
 curl localhost:3000/api/report/0x... | jq '.riskScore'
 ```
 
----
 
-<p align="center">
-  <strong>N3: Securing Web3, One Template at a Time</strong> 🛡️
-</p>

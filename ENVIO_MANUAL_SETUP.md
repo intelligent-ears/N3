@@ -621,6 +621,4 @@ envio logs --follow
 envio status
 ```
 
----
 
-**That's it!** You now have a fully functional blockchain indexer for N3 security data. 🎉
